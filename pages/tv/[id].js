@@ -5,13 +5,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Loader from '../../components/Loader';
 import Video from '../../components/Video';
-import { useWatchlistContext } from '../../context/watchlistContext';
+import { useWatchlist } from '../../context/watchlistContext';
 import useSWR from 'swr';
 import Card from '../../components/Card';
 import { useState } from 'react';
 import { Navigation, Pagination, Scrollbar, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { btnStyle, episodeRuntime } from '../../utils/utils';
+import { episodeRuntime } from '../../utils/utils';
 import { toast } from 'react-hot-toast';
 
 import 'swiper/css';
@@ -23,7 +23,7 @@ const Movie = ({ tv, videos, cast }) => {
     watchlist,
     addShowToWatchlist,
     removeShowFromWatchlist,
-  } = useWatchlistContext();
+  } = useWatchlist();
   const [pageCount, setPageCount] = useState(1);
   const { back, query } = useRouter();
   const id = query.id;
@@ -49,10 +49,10 @@ const Movie = ({ tv, videos, cast }) => {
   return (
     <main className="container mx-auto my-6">
       <button
-        className={`${btnStyle} mx-4 sm:mx-0 mb-6`}
+        className={`btn bg-primary-color hover:bg-secondary-color mx-4 sm:mx-0 mb-6`}
         onClick={() => back()}
       >
-        Go back
+        Go Back
       </button>
       <section className="details-grid mx-4 sm:mx-0">
         {/* IMAGE */}
@@ -78,7 +78,7 @@ const Movie = ({ tv, videos, cast }) => {
             <div className="my-4">
               {tv?.genres?.map((genre) => (
                 <p
-                  className="bg-secondary-color hover:bg-black transition-all duration-300 sm:mt-4 my-4 mr-4 p-2 border-2 rounded-full  border-primary-color inline-block"
+                  className="bg-secondary-color hover:bg-dark-blue transition-all duration-300 sm:mt-4 my-4 mr-4 p-2 border-2 rounded-full inline-block"
                   key={genre?.id}
                 >
                   {genre?.name}
@@ -87,18 +87,17 @@ const Movie = ({ tv, videos, cast }) => {
             </div>
             <p className="text-lg max-w-prose">{tv?.overview}</p>
             {tv?.homepage && (
-              <Link href={tv.homepage}>
-                <a
-                  className="font-bold inline-block mt-3 text-primary-color text-lg cursor-pointer"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Website
-                </a>
+              <Link
+                href={tv.homepage}
+                className="font-bold inline-block mt-3 text-lg hover:text-secondary-color"
+                target="_blank"
+                rel="noopener"
+              >
+                Website
               </Link>
             )}
             <button
-              className={`${btnStyle} mt-4 block`}
+              className={`btn bg-primary-color hover:bg-secondary-color mt-4 block`}
               onClick={
                 inWatchlist
                   ? () => removeShowFromWatchlist(tv)
@@ -130,49 +129,57 @@ const Movie = ({ tv, videos, cast }) => {
           <Video key={video?.id} video={video} />
         ))}
       </section>
-      <section>
-        <h2 className="font-bold text-2xl mt-6 sm:mx-0 mx-6">
-          Similar TV Shows
-        </h2>
-        <Swiper
-          className="swiper-container"
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-            },
-            768: {
-              slidesPerView: 4,
-            },
-            1024: {
-              slidesPerView: 5,
-            },
-          }}
-          modules={[Navigation, Scrollbar, Pagination, Autoplay]}
-          navigation
-          loop={true}
-          autoplay={{ delay: 4000 }}
-        >
-          {!similar && !error ? (
-            <Loader />
-          ) : (
-            similar?.results.map((item) => (
-              <SwiperSlide key={item.id} className="swiper-slide">
-                <Card media="tv" item={item} id={item.id} />
-              </SwiperSlide>
-            ))
-          )}
-        </Swiper>
-        <div className="flex justify-center items-center">
-          {pageCount > 1 && (
-            <button className={btnStyle} onClick={prevPage}>
-              Prev
+      {similar?.results?.length >= 1 && (
+        <section>
+          <h2 className="font-bold text-2xl mt-6 sm:mx-0 mx-6">
+            Similar TV Shows
+          </h2>
+          <Swiper
+            className="swiper-container"
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+              },
+              768: {
+                slidesPerView: 4,
+              },
+              1024: {
+                slidesPerView: 5,
+              },
+            }}
+            modules={[Navigation, Scrollbar, Pagination, Autoplay]}
+            navigation
+            loop={true}
+            autoplay={{ delay: 4000 }}
+          >
+            {!similar && !error ? (
+              <Loader />
+            ) : (
+              similar?.results.map((item) => (
+                <SwiperSlide key={item.id} className="swiper-slide">
+                  <Card media="tv" item={item} id={item.id} />
+                </SwiperSlide>
+              ))
+            )}
+          </Swiper>
+          <div className="flex justify-center items-center">
+            {pageCount > 1 && (
+              <button
+                className={`btn bg-primary-color hover:bg-secondary-color`}
+                onClick={prevPage}
+              >
+                Prev
+              </button>
+            )}
+            <button
+              className={`btn bg-primary-color hover:bg-secondary-color ml-4`}
+              onClick={nextPage}
+            >
+              Next
             </button>
-          )}
-          <button className={`${btnStyle} ml-4`} onClick={nextPage}>
-            Next
-          </button>
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
     </main>
   );
 };

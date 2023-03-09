@@ -4,7 +4,6 @@ import useSWR from 'swr';
 import Loader from '../components/Loader';
 import SearchInput from '../components/SearchInput';
 import Card from '../components/Card';
-import { btnStyle } from '../utils/utils';
 import toast from 'react-hot-toast';
 
 const MoviesPage = () => {
@@ -35,8 +34,11 @@ const MoviesPage = () => {
         <h2 className="text-xl text-center my-6">Discover TV Shows</h2>
         <div className="flex items-center justify-between sm:mx-0 mx-4">
           <SearchInput handleSubmit={handleSubmit} media="tv" />
-          <button className={`${btnStyle} my-0 px-1`} onClick={() => back()}>
-            Go back
+          <button
+            className={`btn bg-primary-color hover:bg-secondary-color`}
+            onClick={() => back()}
+          >
+            Go Back
           </button>
         </div>
       </section>
@@ -52,11 +54,17 @@ const MoviesPage = () => {
         </div>
         <div className="flex justify-center items-center">
           {pageCount > 1 && (
-            <button className={`${btnStyle} mr-4`} onClick={prevPage}>
+            <button
+              className={`btn p-3 bg-primary-color hover:bg-secondary-color mr-4`}
+              onClick={prevPage}
+            >
               Prev
             </button>
           )}
-          <button className={btnStyle} onClick={nextPage}>
+          <button
+            className={`btn p-3 bg-primary-color hover:bg-secondary-color`}
+            onClick={nextPage}
+          >
             Next
           </button>
         </div>

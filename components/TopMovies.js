@@ -21,10 +21,11 @@ const TopMovies = ({ topMovies }) => {
     <section className="mx-4 sm:mx-0">
       <div className="flex justify-between items-center">
         <h2 className="text-xl">Top Rated Movies</h2>
-        <Link href="/movie">
-          <a className="cursor-pointer border-2 p-2 rounded-lg hover:bg-secondary-color ease-out duration-200 sm:text-base text-sm">
-            View More
-          </a>
+        <Link
+          className="cursor-pointer border-2 p-2 rounded-lg hover:bg-secondary-color hover:text-white ease-out duration-200 sm:text-base text-sm"
+          href="/movie"
+        >
+          View More
         </Link>
       </div>
       <Swiper

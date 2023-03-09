@@ -17,7 +17,9 @@ const TvSearchPage = () => {
   const { data, error } = useSWR(
     `https://api.themoviedb.org/3/search/${media}?api_key=${process.env.API_KEY}&language=en-US&query=${search}&page=${pageCount}&include_adult=false`
   );
-  if (error) toast.error(error);
+  if (error) toast.error(error.message);
+
+  console.log(error);
 
   const prevPage = () => {
     if (pageCount < 1) return;
@@ -46,7 +48,13 @@ const TvSearchPage = () => {
             <Loader />
           ) : (
             data?.results.map((item) => (
-              <Card id={item.id} key={item.id} item={item} media={media} />
+              <Card
+                id={item.id}
+                key={item.id}
+                item={item}
+                media={media}
+                search
+              />
             ))
           )}
           {data?.results.length === 0 && <NoResults term={search} />}

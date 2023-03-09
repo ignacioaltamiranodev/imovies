@@ -9,8 +9,7 @@ module.exports = {
       colors: {
         'primary-color': 'var(--primary-color)',
         'secondary-color': 'var(--secondary-color)',
-        'black': 'var(--black)',
-        'white': 'var(--white)',
+        'dark-blue': 'var(--dark-blue)',
       },
     },
   },

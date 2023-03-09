@@ -1,73 +1,56 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { onSnapshot, doc, setDoc } from 'firebase/firestore';
 import { db } from '../config/firebase.config';
-import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
+import { useAuth } from './authContext';
 
 const WatchlistContext = createContext();
 
 export const WatchlistProvider = ({ children }) => {
+  const { user } = useAuth();
   const [watchlist, setWatchlist] = useState([]);
-  const { data: session } = useSession();
 
   useEffect(() => {
-    if (session?.user?.uid) {
-      const docRef = doc(db, 'watchlist', session?.user?.uid);
+    if (user) {
+      const docRef = doc(db, 'watchlist', user?.uid);
       var unsubscribe = onSnapshot(docRef, (doc) => {
         if (doc.exists()) {
           setWatchlist(doc.data().items);
         }
       });
+      setWatchlist([]);
 
       return () => {
         unsubscribe();
       };
     }
-  }, [session?.user?.uid]);
+  }, [user]);
 
   const addShowToWatchlist = async (item, cast) => {
-    if (!session) {
+    if (!user) {
       toast.error('Please sign in to add an item to your watchlist.');
       return;
     }
 
-    const docRef = doc(db, 'watchlist', session?.user?.uid);
+    const docRef = doc(db, 'watchlist', user?.uid);
     try {
+      const tvItem = {
+        id: item?.id,
+        title: item?.name,
+        media: 'tv',
+        rating: item?.vote_average,
+        episode_run_time: item?.episode_run_time,
+        overview: item?.overview,
+        first_air_date: item?.first_air_date,
+        cast: cast?.slice(0, 5),
+        genres: item?.genres,
+        episodes_number: item?.number_of_episodes,
+        image: `https://image.tmdb.org/t/p/w780${item?.poster_path}`,
+      };
       await setDoc(
         docRef,
         {
-          items: watchlist
-            ? [
-                ...watchlist,
-                {
-                  id: item?.id,
-                  title: item?.name,
-                  media: 'tv',
-                  rating: item?.vote_average,
-                  episode_run_time: item?.episode_run_time,
-                  overview: item?.overview,
-                  first_air_date: item?.first_air_date,
-                  cast: cast?.slice(0, 5),
-                  genres: item?.genres,
-                  episodes_number: item?.number_of_episodes,
-                  image: `https://image.tmdb.org/t/p/w780${item?.poster_path}`,
-                },
-              ]
-            : [
-                {
-                  id: item?.id,
-                  name: item?.name,
-                  media: 'tv',
-                  rating: item?.vote_average,
-                  episode_run_time: item?.episode_run_time,
-                  overview: item?.overview,
-                  first_air_date: item?.first_air_date,
-                  cast: cast?.slice(0, 5),
-                  genres: item?.genres,
-                  episodes_number: item?.number_of_episodes,
-                  image: `https://image.tmdb.org/t/p/w780${item?.poster_path}`,
-                },
-              ],
+          items: watchlist ? [...watchlist, tvItem] : [tvItem],
         },
         { merge: 'true' }
       );
@@ -78,7 +61,7 @@ export const WatchlistProvider = ({ children }) => {
   };
 
   const removeShowFromWatchlist = async (item) => {
-    const docRef = doc(db, 'watchlist', session?.user?.uid);
+    const docRef = doc(db, 'watchlist', user?.uid);
     await setDoc(
       docRef,
       {
@@ -90,46 +73,29 @@ export const WatchlistProvider = ({ children }) => {
   };
 
   const addMovieToWatchlist = async (item, cast) => {
-    if (!session) {
+    if (!user) {
       toast.error('Please sign in to add an item to your watchlist.');
       return;
     }
 
-    const docRef = doc(db, 'watchlist', session?.user?.uid);
+    const docRef = doc(db, 'watchlist', user?.uid);
     try {
+      const movieItem = {
+        id: item?.id,
+        media: 'movie',
+        title: item?.title,
+        rating: item?.vote_average,
+        runtime: item?.runtime,
+        overview: item?.overview,
+        release_date: item?.release_date,
+        cast: cast?.slice(0, 5),
+        genres: item?.genres,
+        image: `https://image.tmdb.org/t/p/w780${item?.poster_path}`,
+      };
       await setDoc(
         docRef,
         {
-          items: watchlist
-            ? [
-                ...watchlist,
-                {
-                  id: item?.id,
-                  media: 'movie',
-                  title: item?.title,
-                  rating: item?.vote_average,
-                  runtime: item?.runtime,
-                  overview: item?.overview,
-                  release_date: item?.release_date,
-                  cast: cast?.slice(0, 5),
-                  genres: item?.genres,
-                  image: `https://image.tmdb.org/t/p/w780${item?.poster_path}`,
-                },
-              ]
-            : [
-                {
-                  id: item?.id,
-                  media: 'movie',
-                  title: item?.title,
-                  rating: item?.vote_average,
-                  runtime: item?.runtime,
-                  overview: item?.overview,
-                  release_date: item?.release_date,
-                  cast: cast?.slice(0, 5),
-                  genres: item?.genres,
-                  image: `https://image.tmdb.org/t/p/w780${item?.poster_path}`,
-                },
-              ],
+          items: watchlist ? [...watchlist, movieItem] : [movieItem],
         },
         { merge: 'true' }
       );
@@ -140,7 +106,7 @@ export const WatchlistProvider = ({ children }) => {
   };
 
   const removeMovieFromWatchlist = async (item) => {
-    const docRef = doc(db, 'watchlist', session?.user?.uid);
+    const docRef = doc(db, 'watchlist', user?.uid);
     await setDoc(
       docRef,
       {
@@ -158,6 +124,7 @@ export const WatchlistProvider = ({ children }) => {
     addMovieToWatchlist,
     removeMovieFromWatchlist,
   };
+
   return (
     <WatchlistContext.Provider value={value}>
       {children}
@@ -165,7 +132,6 @@ export const WatchlistProvider = ({ children }) => {
   );
 };
 
-export const useWatchlistContext = () => {
-  const context = useContext(WatchlistContext);
-  return context;
+export const useWatchlist = () => {
+  return useContext(WatchlistContext);
 };

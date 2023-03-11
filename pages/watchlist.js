@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import { useWatchlist } from '../context/watchlistContext';
 import { AiFillDelete, AiFillStar } from 'react-icons/ai';
@@ -17,9 +16,9 @@ const WatchlistPage = () => {
   const { user } = useAuth();
   const { back, push } = useRouter();
 
-  if (!user) {
-    push('/login');
-  }
+  // if (!user) {
+  //   push('/login');
+  // }
 
   const removeFromWatchlist = async (item) => {
     const docRef = doc(db, 'watchlist', user?.uid);
@@ -41,11 +40,13 @@ const WatchlistPage = () => {
     exit: { opacity: 0 },
   };
 
+  console.log(watchlist);
+
   return (
     <main className="container mx-auto my-6">
       <div className="sm:mx-0 mx-4">
         <button
-          className={`btn bg-primary-color hover:bg-secondary-color mb-6`}
+          className={`btn bg-primary-color hover:bg-secondary-color mb-3`}
           onClick={() => back()}
         >
           Go Back
@@ -69,7 +70,7 @@ const WatchlistPage = () => {
           </Link>
         </section>
       )}
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {watchlist.map((item) => (
           <motion.article
             initial="hidden"
@@ -89,8 +90,8 @@ const WatchlistPage = () => {
                   className="cursor-pointer h-full"
                   src={item.image}
                   alt={item.title}
-                  height={150}
-                  width={150}
+                  height={200}
+                  width={200}
                 />
               </Link>
             </div>
@@ -98,6 +99,7 @@ const WatchlistPage = () => {
               <div className="ml-4 sm:text-lg">
                 <div className="flex items-center">
                   <Link
+                    className="hover:text-secondary-color"
                     href={
                       item?.media === 'movie'
                         ? `movie/${item?.id}`
@@ -172,7 +174,56 @@ const WatchlistPage = () => {
             </div>
           </motion.article>
         ))}
-      </AnimatePresence>
+      </AnimatePresence> */}
+      <section className="sm:flex flex-wrap atchlist-grid">
+        <AnimatePresence>
+          {watchlist.map((item) => (
+            <motion.article
+              initial="hidden"
+              animate="show"
+              exit="exit"
+              variants={animateCard}
+              key={item.id}
+            >
+              <div className="flex flex-col md:items-start items-center justify-center p-2 mx-auto max-w-[300px] ">
+                <Link
+                  href={
+                    item.media === 'movie'
+                      ? `movie/${item.id}`
+                      : `/tv/${item.id}`
+                  }
+                >
+                  <Image
+                    className="cursor-pointer h-full"
+                    src={item.image}
+                    alt={item.title}
+                    height={300}
+                    width={300}
+                  />
+                </Link>
+                <div className="flex items-center justify-between w-full mt-2">
+                  <Link
+                    className="text-lg font-bold hover:text-white"
+                    href={
+                      item?.media === 'movie'
+                        ? `movie/${item?.id}`
+                        : `tv/${item?.id}`
+                    }
+                  >
+                    {item?.name || item?.title}
+                  </Link>
+                  <button
+                    className="btn px-2 py-1 bg-secondary-color"
+                    onClick={() => removeFromWatchlist(item)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </AnimatePresence>
+      </section>
     </main>
   );
 };

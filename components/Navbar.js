@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return (
     <header className="h-[8vh] sticky top-0 bg-primary-color text-white flex md:p-0 p-5 z-50">
-      <nav className="container flex justify- items-center mx-auto">
+      <nav className="container flex items-center mx-auto">
         <Link className="sm:text-3xl text-xl mr-4 cursor-pointer" href="/">
           IMovies
         </Link>
@@ -29,14 +29,14 @@ const Navbar = () => {
             </Link>
           )}
           {watchlist.length > 0 && user && (
-            <span className="ml-2 bg-secondary-color px-[0.6rem] py-1 text-md rounded-[50%]">
+            <span className="ml-2 bg-secondary-color px-[0.6rem] pb-1 text-lg rounded-[50%]">
               {watchlist.length}
             </span>
           )}
         </div>
         {user ? (
           <div className="flex items-center ml-auto">
-            <h5 className="mr-4 lg:block hidden">
+            <h5 className="mr-4">
               {user?.username || user?.email?.split('@', 1)[0]}
             </h5>
             <div className="flex items-center">
@@ -50,7 +50,7 @@ const Navbar = () => {
                 />
               )}
               <button
-                className={`btn bg-dark-blue mr-4 hover:bg-secondary-color`}
+                className={`btn bg-dark-blue hover:bg-secondary-color`}
                 onClick={logOut}
               >
                 Sign Out

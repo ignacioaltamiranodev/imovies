@@ -1,15 +1,11 @@
-import TrendingMovies from './TrendingMovies';
-import TrendingSeries from './TrendingSeries';
-import TopMovies from './TopMovies';
-import TopSeries from './TopSeries';
+import Hero from './Hero';
+import SliderSection from './SliderSection';
 
-const Home = ({ trendingMovies, trendingSeries, topMovies, topSeries }) => {
+const Home = ({ data }) => {
   return (
     <main className="container mx-auto my-6">
-      <TrendingMovies trendingMovies={trendingMovies} />
-      <TopMovies topMovies={topMovies} />
-      <TrendingSeries trendingSeries={trendingSeries} />
-      <TopSeries topSeries={topSeries} />
+      <Hero data={data} />
+      <SliderSection data={data} />
     </main>
   );
 };

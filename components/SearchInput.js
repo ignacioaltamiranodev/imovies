@@ -23,7 +23,7 @@ const SearchInput = ({ media }) => {
       onSubmit={handleSubmit}
     >
       <input
-        className="py-2 inline-block rounded-full text-dark-blue h-full outline-0 text-sm w-full border-none focus:border-none"
+        className="py-2 inline-block rounded-full text-dark-blue h-full outline-0 text- w-full border-none focus:border-none"
         placeholder="Search"
         onChange={handleChange}
         value={search}

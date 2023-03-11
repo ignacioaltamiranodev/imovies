@@ -1,13 +1,12 @@
-/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import Image from 'next/image';
 
-const Card = ({ id, item, media, search }) => {
+const Card = ({ id, item, media }) => {
   const cardStyle =
-    'rounded flex flex-col p-2 hover:bg-secondary-colo bg-primary-color transition-all ease-in duration-200 cursor-pointer relative';
+    'rounded flex flex-col p-3 bg-primary-color transition-all ease-in duration-200 cursor-pointer relative';
 
   return (
-    <div className={`${cardStyle}`}>
+    <div className={`${item.poster_path ? cardStyle : 'hidden'}`}>
       <span className="absolute text-sm p-1 rounded -right-0 -top-3 z-10 bg-secondary-color text-pr font-bol cursor-default">
         {item.vote_average.toFixed(1)}
       </span>
@@ -18,8 +17,8 @@ const Card = ({ id, item, media, search }) => {
         <Image
           src={`https://image.tmdb.org/t/p/w780${item.poster_path}`}
           alt={item.title || item.name}
-          width={350}
-          height={250}
+          width={400}
+          height={400}
         />
         <h2 className="text-md text-center flex-wrap my-2">
           {item.title || item.name || item.original_title}

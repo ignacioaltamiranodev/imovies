@@ -1,50 +1,24 @@
-/* eslint-disable @next/next/no-img-element */
 import axios from 'axios';
-import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Loader from '../../components/Loader';
 import Video from '../../components/Video';
-import { useWatchlist } from '../../context/watchlistContext';
 import useSWR from 'swr';
 import Card from '../../components/Card';
-import { useState } from 'react';
 import { Navigation, Pagination, Scrollbar, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { episodeRuntime } from '../../utils/utils';
-import { toast } from 'react-hot-toast';
+import TvDetails from '../../components/TvDetails';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
 
 const Movie = ({ tv, videos, cast }) => {
-  const {
-    watchlist,
-    addShowToWatchlist,
-    removeShowFromWatchlist,
-  } = useWatchlist();
-  const [pageCount, setPageCount] = useState(1);
   const { back, query } = useRouter();
   const id = query.id;
 
   const { data: similar, error } = useSWR(
-    `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${process.env.API_KEY}&language=en-US&page=${pageCount}`
+    `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${process.env.API_KEY}&language=en-US&page=1`
   );
-
-  if (!tv || !videos || !cast) return <Loader />;
-  if (error) toast.error(error.message);
-
-  const prevPage = () => {
-    if (pageCount < 1) return;
-    setPageCount((prev) => prev - 1);
-  };
-
-  const nextPage = () => {
-    setPageCount((prev) => prev + 1);
-  };
-
-  const inWatchlist = watchlist.find((item) => item.id === tv?.id);
 
   return (
     <main className="container mx-auto my-6">
@@ -54,76 +28,7 @@ const Movie = ({ tv, videos, cast }) => {
       >
         Go Back
       </button>
-      <section className="details-grid mx-4 sm:mx-0">
-        {/* IMAGE */}
-        <div className="flex justify-center items-center">
-          <Image
-            className="rounded-lg"
-            src={`https://image.tmdb.org/t/p/w780${tv?.poster_path}`}
-            alt={tv?.name}
-            width={500}
-            height={700}
-          />
-        </div>
-        {/* INFO */}
-        <div className="flex flex-col items-center justify-center sm:mt-0 mt-4">
-          <div>
-            <div className="flex items-center sm:mt-6">
-              <h2 className="text-3xl font-bold">
-                {tv?.name} {`(${tv?.first_air_date.slice(0, 4)})`}
-              </h2>
-              <p className="ml-auto text-lg">{episodeRuntime(tv)}</p>
-            </div>
-
-            <div className="my-4">
-              {tv?.genres?.map((genre) => (
-                <p
-                  className="bg-secondary-color hover:bg-dark-blue transition-all duration-300 sm:mt-4 my-4 mr-4 p-2 border-2 rounded-full inline-block"
-                  key={genre?.id}
-                >
-                  {genre?.name}
-                </p>
-              ))}
-            </div>
-            <p className="text-lg max-w-prose">{tv?.overview}</p>
-            {tv?.homepage && (
-              <Link
-                href={tv.homepage}
-                className="font-bold inline-block mt-3 text-lg hover:text-secondary-color"
-                target="_blank"
-                rel="noopener"
-              >
-                Website
-              </Link>
-            )}
-            <button
-              className={`btn bg-primary-color hover:bg-secondary-color mt-4 block`}
-              onClick={
-                inWatchlist
-                  ? () => removeShowFromWatchlist(tv)
-                  : () => addShowToWatchlist(tv, cast)
-              }
-            >
-              {inWatchlist ? 'Remove from watchlist' : 'Add to watchlist'}
-            </button>
-          </div>
-          {/* CAST */}
-          <>
-            <h3 className="text-2xl font-bold my-4">Casts</h3>
-            <div className="casts">
-              {cast?.slice(0, 5).map((member) => (
-                <div key={member.id}>
-                  <img
-                    src={`https://image.tmdb.org/t/p/w780${member?.profile_path}`}
-                    alt={member.name}
-                  />
-                  <p className="text-sm text-center mt-2">{member?.name}</p>
-                </div>
-              ))}
-            </div>
-          </>
-        </div>
-      </section>
+      {tv ? <TvDetails tv={tv} cast={cast} /> : <Loader />}
       <section>
         {videos?.map((video) => (
           <Video key={video?.id} video={video} />
@@ -162,22 +67,6 @@ const Movie = ({ tv, videos, cast }) => {
               ))
             )}
           </Swiper>
-          <div className="flex justify-center items-center">
-            {pageCount > 1 && (
-              <button
-                className={`btn bg-primary-color hover:bg-secondary-color`}
-                onClick={prevPage}
-              >
-                Prev
-              </button>
-            )}
-            <button
-              className={`btn bg-primary-color hover:bg-secondary-color ml-4`}
-              onClick={nextPage}
-            >
-              Next
-            </button>
-          </div>
         </section>
       )}
     </main>

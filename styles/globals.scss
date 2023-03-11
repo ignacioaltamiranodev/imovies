@@ -24,7 +24,7 @@
 @layer components {
   .btn {
     display: block;
-    transition: background-color 300ms ease-in;
+    transition: color, background-color 300ms ease-in;
     border-radius: 5px;
     padding: 0.5rem;
   }
@@ -58,12 +58,6 @@ a {
   }
 }
 
-footer {
-  display: grid;
-  place-items: center;
-  height: 6vh;
-}
-
 img {
   object-fit: cover;
   height: auto;
@@ -95,6 +89,17 @@ p {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 1rem;
+}
+
+.content-overlay {
+  background: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .details-grid {
@@ -140,11 +145,12 @@ p {
   margin-bottom: 1rem;
 }
 
-.swiper-button-prev::after {
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  background-color: var(--dark-blue);
+  padding: 0.8rem;
   color: var(--primary-color);
-}
-.swiper-button-next::after {
-  color: var(--primary-color);
+  font-size: 1.5rem !important;
 }
 
 /* ******* HAMBURGER MENU ******* */

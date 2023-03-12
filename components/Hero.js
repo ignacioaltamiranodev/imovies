@@ -18,7 +18,7 @@ const Hero = () => {
       {heroInfo.map((item) => (
         <SwiperSlide key={item.id}>
           <div
-            className="w-full h-[70vh] relative flex justify-start items-center mb-6"
+            className="w-full h-[70vh] relative flex justify-start items-center"
             style={{
               backgroundImage: `url(
              ${item.url}
@@ -27,9 +27,9 @@ const Hero = () => {
             }}
           >
             <div class="content-overlay"></div>
-            <div className="flex md:w-1/2 h-full justify-center md:items-start items-center flex-col md:ml-14 mx-14 text-white z-10">
+            <div className="flex md:w-1/2 h-full justify-center md:items-start items-start flex-col md:ml-14 mx-14 text-white z-10">
               <h2 className="text-5xl font-bold mb-4">{item.title}</h2>
-              <div className="mb-4">
+              <div className="mb-4 hidden md:block">
                 {item?.genres?.map((genre, i) => (
                   <p
                     className="bg-primary-color sm:mt-4 my-4 mr-4 p-2 rounded-full inline-block"

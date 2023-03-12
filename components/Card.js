@@ -6,7 +6,7 @@ const Card = ({ id, item, media }) => {
     'rounded flex flex-col p-3 bg-primary-color transition-all ease-in duration-200 cursor-pointer relative';
 
   return (
-    <div className={`${item.poster_path ? cardStyle : 'hidden'}`}>
+    <article className={`${item.poster_path ? cardStyle : 'hidden'}`}>
       <span className="absolute text-sm p-1 rounded -right-0 -top-3 z-10 bg-secondary-color text-pr font-bol cursor-default">
         {item.vote_average.toFixed(1)}
       </span>
@@ -27,7 +27,7 @@ const Card = ({ id, item, media }) => {
       <span className="text-md text-center capitalize">
         {item.release_date || item.first_air_date}
       </span>
-    </div>
+    </article>
   );
 };
 

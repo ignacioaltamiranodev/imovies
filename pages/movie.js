@@ -39,7 +39,7 @@ const MoviesPage = () => {
         </div>
       </section>
       <section>
-        <div className="my-6 grid">
+        <div className="my-6 card-grid">
           {!error && !movies ? (
             <Loader />
           ) : (

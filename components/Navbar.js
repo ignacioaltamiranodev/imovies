@@ -1,10 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useWatchlist } from '../context/watchlistContext';
 import { useAuth } from '../context/authContext';
 
 const Navbar = () => {
-  const { watchlist } = useWatchlist();
   const { user, logOut } = useAuth();
 
   return (
@@ -27,11 +25,6 @@ const Navbar = () => {
             <Link className="text-lg ml-4" href="/watchlist">
               Watchlist
             </Link>
-          )}
-          {watchlist.length > 0 && user && (
-            <span className="ml-2 bg-secondary-color px-[0.6rem] pb-1 text-lg rounded-[50%]">
-              {watchlist.length}
-            </span>
           )}
         </div>
         {user ? (

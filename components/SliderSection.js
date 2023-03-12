@@ -17,8 +17,6 @@ const SliderSection = ({ data }) => {
     return null;
   }
 
-  console.log(data);
-
   return (
     <>
       {data.map((section, i) => (

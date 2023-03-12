@@ -44,7 +44,7 @@ const TvSearchPage = () => {
         </div>
       </section>
       <section>
-        <div className="my-6 grid mx-4 sm:mx-0">
+        <div className="my-6 card-grid mx-4 sm:mx-0">
           {data?.results.map((item) => (
             <Card id={item.id} key={item.id} item={item} media={media} />
           ))}

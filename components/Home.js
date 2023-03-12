@@ -3,7 +3,7 @@ import SliderSection from './SliderSection';
 
 const Home = ({ data }) => {
   return (
-    <main className="container mx-auto my-6">
+    <main className="container mx-auto">
       <Hero data={data} />
       <SliderSection data={data} />
     </main>

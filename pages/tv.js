@@ -29,7 +29,7 @@ const MoviesPage = () => {
   };
 
   return (
-    <main className="container mx-auto my-">
+    <main className="container mx-auto my-6">
       <section>
         <h2 className="text-xl text-center my-6">Discover TV Shows</h2>
         <div className="flex items-center justify-between sm:mx-0 mx-4">
@@ -43,7 +43,7 @@ const MoviesPage = () => {
         </div>
       </section>
       <section>
-        <div className="my-6 grid">
+        <div className="my-6 card-grid">
           {!error && !tv ? (
             <Loader />
           ) : (

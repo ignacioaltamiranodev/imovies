@@ -10,7 +10,6 @@ const nextConfig = {
       'lh3.googleusercontent.com',
       'firebasestorage.googleapis.com',
       'image.tmdb.org',
-      'images.unsplash.com',
     ],
   },
 };

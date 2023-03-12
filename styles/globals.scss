@@ -122,7 +122,7 @@ p {
   }
 }
 
-.grid {
+.card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1.5rem;
@@ -213,6 +213,10 @@ p {
   }
 
   /* ******* LOADER ******* */
+  .loader-wrapper {
+    @include grid-center();
+  }
+
   .lds-spinner {
     color: official;
     display: inline-block;

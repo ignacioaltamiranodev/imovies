@@ -77,15 +77,17 @@ const MovieDetails = ({ movie, cast }) => {
         <>
           <h3 className="text-2xl font-bold my-4">Casts</h3>
           <div className="casts">
-            {cast?.slice(0, 5).map((member) => (
-              <div key={member.id}>
-                <Image
-                  src={`https://image.tmdb.org/t/p/w780${member?.profile_path}`}
-                  alt={member.name}
-                  width={300}
-                  height={300}
-                />
-                <p className="text-sm text-center mt-2">{member?.name}</p>
+            {cast?.slice(0, 5).map(({ id, profile_path, name }) => (
+              <div key={id}>
+                <Link href={`/person/${id}`}>
+                  <Image
+                    src={`https://image.tmdb.org/t/p/w780${profile_path}`}
+                    alt={name}
+                    width={300}
+                    height={300}
+                  />
+                </Link>
+                <p className="text-sm text-center mt-2">{name}</p>
               </div>
             ))}
           </div>
